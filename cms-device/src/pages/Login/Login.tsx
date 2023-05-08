@@ -1,0 +1,78 @@
+const Login = () => {
+  return (
+    <div className='flex h-screen items-center justify-center'>
+      <form className='w-auto rounded bg-white p-10'>
+        <div className='text-center text-2xl font-bold'>Log in</div>
+        <div className='my-7'>
+          <div className='pointer-events-none absolute flex items-center py-2 pl-3'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+              className='h-5 w-5'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z'
+              />
+            </svg>
+          </div>
+          <input
+            type='email'
+            placeholder='user name'
+            name='email'
+            className=' w-full rounded-md border border-gray-300 px-10 py-2 outline-none focus:border-blue-500 focus:shadow-sm'
+          />
+        </div>
+        <div className='my-7'>
+          <div className='pointer-events-none absolute flex items-center py-2 pl-3'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+              className='h-5 w-5'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z'
+              />
+            </svg>
+          </div>
+          <input
+            type='password'
+            placeholder='password'
+            name='password'
+            className='w-full rounded-md border border-gray-300 px-10 py-2 outline-none focus:border-blue-500 focus:shadow-sm'
+          />
+        </div>
+        <div className='mt-7 flex justify-between'>
+          <div className='flex items-center'>
+            <input
+              id='checked-remember-me'
+              type='checkbox'
+              className='h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600'
+            />
+            <label htmlFor='checked-remember-me' className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'>
+              Remember me
+            </label>
+          </div>
+
+          <a href='#top' className='text-blue-300'>
+            forgot password
+          </a>
+        </div>
+        <div className='mt-3'>
+          <button className='w-full rounded-md bg-blue-500 px-10 py-2'>Log in</button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+export default Login
