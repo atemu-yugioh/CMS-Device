@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import { AppContext } from './contexts/app.context'
 import DashBoard from './pages/DashBoard'
 import path from './constants/path'
+import MainLayout from './layouts/MainLayout'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
@@ -24,7 +25,11 @@ const useRouteElement = () => {
       children: [
         {
           path: path.dashboard,
-          element: <DashBoard />
+          element: (
+            <MainLayout>
+              <DashBoard />
+            </MainLayout>
+          )
         }
       ]
     },
