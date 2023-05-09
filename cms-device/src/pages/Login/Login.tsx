@@ -1,18 +1,18 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import Input from 'src/components/Input'
-import { rules } from 'src/utils/rules'
+import { LoginSchema, loginSchema } from 'src/utils/rules'
 
-interface FormData {
-  email: string
-  password: string
-}
+type FormData = LoginSchema
 
 const Login = () => {
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<FormData>()
+  } = useForm<FormData>({
+    resolver: yupResolver(loginSchema)
+  })
 
   const onSubmit = handleSubmit((data) => {
     console.log(data)
@@ -43,7 +43,6 @@ const Login = () => {
             </svg>
           }
           register={register}
-          rules={rules.email}
           className='mt-5'
           classNameIcon='py-2 pl-3'
           errorMessage={errors.email?.message}
@@ -73,7 +72,6 @@ const Login = () => {
           placeholder='password'
           errorMessage={errors.password?.message}
           register={register}
-          rules={rules.password}
         />
 
         <div className='mt-3 flex justify-between'>
