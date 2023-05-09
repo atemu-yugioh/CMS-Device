@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { UseFormRegister, RegisterOptions } from 'react-hook-form'
+import type { UseFormRegister } from 'react-hook-form'
 
 interface Props {
   className?: string
