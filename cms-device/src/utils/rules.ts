@@ -1,38 +1,18 @@
 import type { RegisterOptions } from 'react-hook-form'
+import * as yup from 'yup'
 
-type Rules = { [key in 'email' | 'password']: RegisterOptions }
+export const loginSchema = yup.object({
+  email: yup
+    .string()
+    .required('Email là bắt buộc')
+    .email('Email không đúng định dạng')
+    .min(5, 'Độ dài từ 5 - 160 ký tự')
+    .max(160, 'Độ dài từ 5 - 160 ký tự'),
+  password: yup
+    .string()
+    .required('Password là bắt buộc')
+    .min(6, 'Độ dài từ 6 - 160 ký tự')
+    .max(160, 'Độ dài từ 6 - 160 ký tự')
+})
 
-export const rules: Rules = {
-  email: {
-    required: {
-      value: true,
-      message: 'Email là bắt buộc'
-    },
-    pattern: {
-      value: /^\S+@\S+\.\S+$/,
-      message: 'Email không đúng định dạng'
-    },
-    maxLength: {
-      value: 160,
-      message: 'Độ dài từ 5 - 160 ký tự'
-    },
-    minLength: {
-      value: 5,
-      message: 'Độ dài từ 5 - 160 ký tự'
-    }
-  },
-  password: {
-    required: {
-      value: true,
-      message: 'password là bắt buộc'
-    },
-    maxLength: {
-      value: 160,
-      message: 'Độ dài từ 5 - 160 ký tự'
-    },
-    minLength: {
-      value: 5,
-      message: 'Độ dài từ 5 - 160 ký tự'
-    }
-  }
-}
+export type LoginSchema = yup.InferType<typeof loginSchema>

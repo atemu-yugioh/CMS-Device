@@ -13,7 +13,6 @@ interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon: any
   register: UseFormRegister<any>
-  rules?: RegisterOptions
 }
 
 const Input = ({
@@ -26,13 +25,12 @@ const Input = ({
   name,
   errorMessage,
   icon,
-  register,
-  rules
+  register
 }: Props) => {
   return (
     <div className={className}>
       {icon ? <div className={`pointer-events-none absolute flex items-center ${classNameIcon}`}>{icon}</div> : null}
-      <input type={type} placeholder={placeholder} className={classNameInput} {...register(name, rules)} />
+      <input type={type} placeholder={placeholder} className={classNameInput} {...register(name)} />
       <div className={classNameError}>{errorMessage}</div>
     </div>
   )
