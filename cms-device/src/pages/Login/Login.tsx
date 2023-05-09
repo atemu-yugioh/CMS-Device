@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import Input from 'src/components/Input'
 import { rules } from 'src/utils/rules'
 
 interface FormData {
@@ -21,8 +22,11 @@ const Login = () => {
     <div className='flex h-screen items-center justify-center'>
       <form className='w-auto rounded bg-white p-10' onSubmit={onSubmit} noValidate>
         <div className='text-center text-2xl font-bold'>Log in</div>
-        <div className='mt-3'>
-          <div className='pointer-events-none absolute flex items-center py-2 pl-3'>
+        <Input
+          type='email'
+          name='email'
+          placeholder='user name'
+          icon={
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -37,17 +41,20 @@ const Login = () => {
                 d='M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z'
               />
             </svg>
-          </div>
-          <input
-            type='email'
-            placeholder='user name'
-            className=' w-full rounded-md border border-gray-300 px-10 py-2 outline-none focus:border-blue-500 focus:shadow-sm'
-            {...register('email', rules.email)}
-          />
-          <div className='ml-2 mt-1 min-h-[1.25rem] text-sm text-red-500 '>{errors.email?.message}</div>
-        </div>
-        <div className='mt-3'>
-          <div className='pointer-events-none absolute flex items-center py-2 pl-3'>
+          }
+          register={register}
+          rules={rules.email}
+          className='mt-5'
+          classNameIcon='py-2 pl-3'
+          errorMessage={errors.email?.message}
+        />
+
+        <Input
+          type='password'
+          name='password'
+          className='mt-3'
+          classNameIcon='py-2 pl-3'
+          icon={
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -62,15 +69,13 @@ const Login = () => {
                 d='M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z'
               />
             </svg>
-          </div>
-          <input
-            type='password'
-            placeholder='password'
-            className='w-full rounded-md border border-gray-300 px-10 py-2 outline-none focus:border-blue-500 focus:shadow-sm'
-            {...register('password', rules.password)}
-          />
-          <div className='ml-2 mt-1 min-h-[1.25rem] text-sm text-red-500'>{errors.password?.message}</div>
-        </div>
+          }
+          placeholder='password'
+          errorMessage={errors.password?.message}
+          register={register}
+          rules={rules.password}
+        />
+
         <div className='mt-3 flex justify-between'>
           <div className='flex items-center'>
             <input
