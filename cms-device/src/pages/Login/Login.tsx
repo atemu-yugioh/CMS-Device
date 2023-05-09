@@ -1,9 +1,27 @@
+import { useForm } from 'react-hook-form'
+import { rules } from 'src/utils/rules'
+
+interface FormData {
+  email: string
+  password: string
+}
+
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>()
+
+  const onSubmit = handleSubmit((data) => {
+    console.log(data)
+  })
+
   return (
     <div className='flex h-screen items-center justify-center'>
-      <form className='w-auto rounded bg-white p-10'>
+      <form className='w-auto rounded bg-white p-10' onSubmit={onSubmit} noValidate>
         <div className='text-center text-2xl font-bold'>Log in</div>
-        <div className='my-7'>
+        <div className='mt-3'>
           <div className='pointer-events-none absolute flex items-center py-2 pl-3'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -23,11 +41,12 @@ const Login = () => {
           <input
             type='email'
             placeholder='user name'
-            name='email'
             className=' w-full rounded-md border border-gray-300 px-10 py-2 outline-none focus:border-blue-500 focus:shadow-sm'
+            {...register('email', rules.email)}
           />
+          <div className='ml-2 mt-1 min-h-[1.25rem] text-sm text-red-500 '>{errors.email?.message}</div>
         </div>
-        <div className='my-7'>
+        <div className='mt-3'>
           <div className='pointer-events-none absolute flex items-center py-2 pl-3'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -47,11 +66,12 @@ const Login = () => {
           <input
             type='password'
             placeholder='password'
-            name='password'
             className='w-full rounded-md border border-gray-300 px-10 py-2 outline-none focus:border-blue-500 focus:shadow-sm'
+            {...register('password', rules.password)}
           />
+          <div className='ml-2 mt-1 min-h-[1.25rem] text-sm text-red-500'>{errors.password?.message}</div>
         </div>
-        <div className='mt-7 flex justify-between'>
+        <div className='mt-3 flex justify-between'>
           <div className='flex items-center'>
             <input
               id='checked-remember-me'
@@ -68,7 +88,9 @@ const Login = () => {
           </a>
         </div>
         <div className='mt-3'>
-          <button className='w-full rounded-md bg-blue-500 px-10 py-2'>Log in</button>
+          <button type='submit' className='w-full rounded-md bg-blue-500 px-10 py-2'>
+            Log in
+          </button>
         </div>
       </form>
     </div>
