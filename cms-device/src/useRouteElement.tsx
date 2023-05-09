@@ -1,16 +1,46 @@
-import { useRoutes } from 'react-router-dom'
+import { useContext } from 'react'
+import { Navigate, Outlet, useRoutes } from 'react-router-dom'
 import LoginLayout from './layouts/LoginLayout'
 import Login from './pages/Login'
+import { AppContext } from './contexts/app.context'
+import DashBoard from './pages/DashBoard'
+import path from './constants/path'
+
+const ProtectedRoute = () => {
+  const { isAuthenticated } = useContext(AppContext)
+  return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />
+}
+
+const RejectedRoute = () => {
+  const { isAuthenticated } = useContext(AppContext)
+  return !isAuthenticated ? <Outlet /> : <Navigate to={path.dashboard} />
+}
 
 const useRouteElement = () => {
   const routeElements = useRoutes([
     {
-      path: '/login',
-      element: (
-        <LoginLayout>
-          <Login />
-        </LoginLayout>
-      )
+      path: '',
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: path.dashboard,
+          element: <DashBoard />
+        }
+      ]
+    },
+    {
+      path: '',
+      element: <RejectedRoute />,
+      children: [
+        {
+          path: path.login,
+          element: (
+            <LoginLayout>
+              <Login />
+            </LoginLayout>
+          )
+        }
+      ]
     }
   ])
 

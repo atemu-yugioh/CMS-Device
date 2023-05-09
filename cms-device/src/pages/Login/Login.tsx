@@ -1,13 +1,16 @@
+import { useContext } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import authApi from 'src/apis/auth.api'
 import Input from 'src/components/Input'
 import { LoginSchema, loginSchema } from 'src/utils/rules'
+import { AppContext } from 'src/contexts/app.context'
 
 type FormData = LoginSchema
 
 const Login = () => {
+  const { setIsAuthenticated } = useContext(AppContext)
   const {
     register,
     handleSubmit,
@@ -24,7 +27,8 @@ const Login = () => {
     const body = data
     loginMutation.mutate(body, {
       onSuccess: (data) => {
-        console.log('success', data.data.data)
+        setIsAuthenticated(true)
+        console.log("Login success", data)
       },
       onError: (error) => {
         console.log('error', error)
