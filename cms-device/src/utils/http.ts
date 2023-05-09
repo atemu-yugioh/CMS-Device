@@ -1,10 +1,15 @@
 import axios, { type AxiosInstance, AxiosError } from 'axios'
 import { toast } from 'react-toastify'
 import config from 'src/constants/config'
+import path from 'src/constants/path'
+import { AuthResponse } from 'src/types/auth.type'
+import { clearAccessTokenFromLs, getAccessTokenFromLs, setAccessTokenToLs } from './auth'
 
 class Http {
   instance: AxiosInstance
+  private access_token: string
   constructor() {
+    this.access_token = getAccessTokenFromLs()
     this.instance = axios.create({
       baseURL: config.baseUrl,
       timeout: 10000,
@@ -16,6 +21,15 @@ class Http {
     // interceptors response middleware
     this.instance.interceptors.response.use(
       (response) => {
+        const { url } = response.config
+        if (url === `auth${path.login}`) {
+          const data = response.data as AuthResponse
+          this.access_token = data.data?.access_token
+          setAccessTokenToLs(this.access_token)
+        } else if (url === `auth${path.logout}`) {
+          this.access_token = ''
+          clearAccessTokenFromLs()
+        }
         return response
       },
       (error: AxiosError) => {
