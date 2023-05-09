@@ -1,5 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
+import authApi from 'src/apis/auth.api'
 import Input from 'src/components/Input'
 import { LoginSchema, loginSchema } from 'src/utils/rules'
 
@@ -14,8 +16,20 @@ const Login = () => {
     resolver: yupResolver(loginSchema)
   })
 
+  const loginMutation = useMutation({
+    mutationFn: (body: FormData) => authApi.login(body)
+  })
+
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
+    const body = data
+    loginMutation.mutate(body, {
+      onSuccess: (data) => {
+        console.log('success', data.data.data)
+      },
+      onError: (error) => {
+        console.log('error', error)
+      }
+    })
   })
 
   return (
