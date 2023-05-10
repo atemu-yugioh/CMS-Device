@@ -18,6 +18,20 @@ class Http {
       }
     })
 
+    // * interceptors request middleware
+    this.instance.interceptors.request.use(
+      (config) => {
+        if (this.access_token && config.headers) {
+          config.headers.authorization = this.access_token
+          return config
+        }
+        return config
+      },
+      (error) => {
+        return Promise.reject(error)
+      }
+    )
+
     // interceptors response middleware
     this.instance.interceptors.response.use(
       (response) => {
