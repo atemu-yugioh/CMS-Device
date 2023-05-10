@@ -7,7 +7,7 @@ import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 
 const NavHeader = () => {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile, profile } = useContext(AppContext)
   const handleLogout = () => {
     logoutMutation.mutate()
   }
@@ -16,6 +16,7 @@ const NavHeader = () => {
     mutationFn: authApi.logout,
     onSuccess: () => {
       setIsAuthenticated(false)
+      setProfile(null)
     }
   })
 
@@ -30,7 +31,7 @@ const NavHeader = () => {
           </div>
           <div>
             <Link to={path.dashboard} className='mx-4 font-bold text-slate-500'>
-              username
+              {profile?.full_name}
             </Link>
             <Button onClick={handleLogout} className='mx-4 font-bold text-slate-500 hover:text-blue-500'>
               Logout

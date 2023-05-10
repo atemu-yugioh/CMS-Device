@@ -7,11 +7,12 @@ import Input from 'src/components/Input'
 import { LoginSchema, loginSchema } from 'src/utils/rules'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
+import { setProfileToLs } from 'src/utils/auth'
 
 type FormData = LoginSchema
 
 const Login = () => {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile, profile } = useContext(AppContext)
   const {
     register,
     handleSubmit,
@@ -23,13 +24,13 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: (body: FormData) => authApi.login(body)
   })
-
   const onSubmit = handleSubmit((data) => {
     const body = data
     loginMutation.mutate(body, {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         setIsAuthenticated(true)
-        console.log('Login success', data)
+        const profileFromLs = await setProfileToLs(data.data.data.id)
+        setProfile(profileFromLs)
       },
       onError: (error) => {
         console.log('error', error)

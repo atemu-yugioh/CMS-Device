@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 import config from 'src/constants/config'
 import path from 'src/constants/path'
 import { AuthResponse } from 'src/types/auth.type'
-import { clearAccessTokenFromLs, getAccessTokenFromLs, setAccessTokenToLs } from './auth'
+import { clearAccessTokenFromLs, clearLs, getAccessTokenFromLs, setAccessTokenToLs } from './auth'
 
 class Http {
   instance: AxiosInstance
@@ -42,7 +42,7 @@ class Http {
           setAccessTokenToLs(this.access_token)
         } else if (url === `auth${path.logout}`) {
           this.access_token = ''
-          clearAccessTokenFromLs()
+          clearLs()
         }
         return response
       },
