@@ -6,6 +6,7 @@ import authApi from 'src/apis/auth.api'
 import Input from 'src/components/Input'
 import { LoginSchema, loginSchema } from 'src/utils/rules'
 import { AppContext } from 'src/contexts/app.context'
+import Button from 'src/components/Button'
 
 type FormData = LoginSchema
 
@@ -28,7 +29,7 @@ const Login = () => {
     loginMutation.mutate(body, {
       onSuccess: (data) => {
         setIsAuthenticated(true)
-        console.log("Login success", data)
+        console.log('Login success', data)
       },
       onError: (error) => {
         console.log('error', error)
@@ -109,9 +110,14 @@ const Login = () => {
           </a>
         </div>
         <div className='mt-3'>
-          <button type='submit' className='w-full rounded-md bg-blue-500 px-10 py-2'>
+          <Button
+            type='submit'
+            className='flex w-full items-center justify-center rounded-md bg-blue-500 px-10 py-2'
+            disabled={loginMutation.isLoading}
+            isLoading={loginMutation.isLoading}
+          >
             Log in
-          </button>
+          </Button>
         </div>
       </form>
     </div>
