@@ -1,51 +1,40 @@
-import { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { HiOutlineArrowCircleLeft } from 'react-icons/hi'
 import { AiOutlineBorder } from 'react-icons/ai'
 import { BsSearch } from 'react-icons/bs'
-import { AiTwotoneSetting } from 'react-icons/ai'
-import { MdPermMedia } from 'react-icons/md'
-import { HiOutlineDocumentText } from 'react-icons/hi'
-
-const Menus = [
-  {
-    title: 'Dashboard'
-  },
-  {
-    title: 'Pages',
-    icon: <HiOutlineDocumentText />
-  },
-  {
-    title: 'Media',
-    spacing: true,
-    icon: <MdPermMedia />
-  },
-  {
-    title: 'Projects',
-    submenu: true,
-    submenuItems: [{ title: 'Submenu 1' }, { title: 'Submenu 2' }, { title: 'Submenu 3' }]
-  },
-  {
-    title: 'Analytics'
-  },
-  {
-    title: 'Inbox'
-  },
-  {
-    title: 'Profile',
-    spacing: true
-  },
-  {
-    title: 'Setting'
-  },
-  {
-    title: 'Logout'
-  }
-]
+import SideBarItem from '../SideBarItem'
+import { AppContext } from 'src/contexts/app.context'
+import { useQuery } from '@tanstack/react-query'
+import accessControlApi from 'src/apis/accessControl.api'
+import { AccessControl } from 'src/types/accessControl.type'
 
 const SideBar = () => {
   const [open, setOpen] = useState(true)
+  const [listSideBar, setListSideBar] = useState<AccessControl[]>([])
+  const { profile } = useContext(AppContext)
+
+  const { data: accessControlResponse } = useQuery({
+    queryKey: ['list-access-control-parent'],
+    queryFn: () => accessControlApi.getParentAccessControl()
+  })
+
+  useEffect(() => {
+    if (accessControlResponse?.data.data.total_record) {
+      let accessControlParents: AccessControl[] = accessControlResponse?.data.data.list
+
+      if (profile?.department) {
+        accessControlParents = accessControlParents.filter(
+          (sidebar: AccessControl) => sidebar.name.toUpperCase() !== 'ACCESS CONTROL'
+        )
+      }
+
+      setListSideBar([...accessControlParents])
+    }
+  }, [accessControlResponse?.data.data.list, accessControlResponse?.data.data.total_record, profile?.department])
+
   return (
     <div className={`relative h-screen  bg-dark-purple p-5 pt-8 duration-300 ${open ? 'w-80' : 'w-20'}`}>
+      {/* Button open - close sidebar */}
       <HiOutlineArrowCircleLeft
         className={`absolute -right-3 top-12 cursor-pointer rounded-full border border-dark-purple bg-white text-3xl text-dark-purple ${
           !open && 'rotate-180'
@@ -74,18 +63,11 @@ const SideBar = () => {
           />
         )}
       </div>
-      {/* items */}
+
+      {/* SideBarItem */}
       <ul className='pt-2'>
-        {Menus.map((menu, index) => (
-          <li
-            key={index}
-            className={`${
-              menu.spacing ? 'mt-9' : 'mt-2'
-            } flex cursor-pointer items-center gap-x-4 rounded-md p-2 text-sm text-gray-300 hover:bg-light-white`}
-          >
-            <span className='float-left block text-2xl'>{menu.icon ? menu.icon : <AiTwotoneSetting />}</span>
-            <span className={`flex-1 text-base font-medium duration-200 ${!open && 'hidden'}`}>{menu.title}</span>
-          </li>
+        {listSideBar.map((item, index) => (
+          <SideBarItem key={index} item={item} openSideBar={open} />
         ))}
       </ul>
     </div>

@@ -24,7 +24,7 @@ const useRouteElement = () => {
       element: <ProtectedRoute />,
       children: [
         {
-          path: path.dashboard,
+          path: '*',
           element: (
             <MainLayout>
               <DashBoard />

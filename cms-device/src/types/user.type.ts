@@ -1,3 +1,8 @@
+import { Department } from './department.type'
+import { Permission } from './permission.type'
+import { Role } from './role.type'
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface User {
   id: string
   email: string
@@ -16,4 +21,7 @@ export interface User {
   updatedAt: Date
   access_token: string
   refresh_token: string
+  permissions: Permission[]
+  role: Role[]
+  department: Department[]
 }
