@@ -14,7 +14,7 @@ interface Props {
 }
 
 const SideBarItem = ({ item, openSideBar }: Props) => {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const { profile } = useContext(AppContext)
   const { pathname } = useLocation()
 
@@ -44,7 +44,7 @@ const SideBarItem = ({ item, openSideBar }: Props) => {
             </span>
 
             <HiChevronDown
-              className={`duration-200 ${!open && 'rotate-180'}`}
+              className={`duration-200 ${open && 'rotate-180'}`}
               onClick={() => setOpen(!open)}
               aria-hidden='true'
             />

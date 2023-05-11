@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import { BsSearch } from 'react-icons/bs'
 import path from 'src/constants/path'
 import Button from '../Button'
 import authApi from 'src/apis/auth.api'
@@ -27,7 +26,7 @@ const NavHeader = () => {
         <nav className='flex items-center justify-between'>
           <div>
             <Link to='/login'>
-              <div className='px-5 text-xl text-blue-500'>Something</div>
+              <div className='px-5 text-xl text-blue-500'>Click to dashboard</div>
             </Link>
           </div>
 
