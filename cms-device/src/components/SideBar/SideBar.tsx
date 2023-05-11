@@ -24,7 +24,7 @@ const SideBar = () => {
 
       if (profile?.department) {
         accessControlParents = accessControlParents.filter(
-          (sidebar: AccessControl) => sidebar.name.toUpperCase() !== 'ACCESS CONTROL'
+          (sidebar: AccessControl) => sidebar.name.toUpperCase() !== 'SYSTEM'
         )
       }
 

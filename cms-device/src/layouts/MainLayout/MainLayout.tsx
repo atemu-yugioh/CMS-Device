@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router'
 import NavHeader from 'src/components/NavHeader'
 import SideBar from 'src/components/SideBar'
 
@@ -10,7 +11,10 @@ const MainLayout = ({ children }: Props) => {
       <SideBar />
       <div className='w-full'>
         <NavHeader />
-        <div className='px-5 py-3'>{children}</div>
+        <div className='px-5 py-3'>
+          {children}
+          <Outlet />
+        </div>
       </div>
     </div>
   )
