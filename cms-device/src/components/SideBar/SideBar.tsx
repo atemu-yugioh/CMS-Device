@@ -7,6 +7,7 @@ import { AppContext } from 'src/contexts/app.context'
 import { useQuery } from '@tanstack/react-query'
 import accessControlApi from 'src/apis/accessControl.api'
 import { AccessControl } from 'src/types/accessControl.type'
+import { isAccessRoute } from 'src/utils/utils'
 
 const SideBar = () => {
   const [open, setOpen] = useState(true)
@@ -24,13 +25,19 @@ const SideBar = () => {
 
       if (profile?.department) {
         accessControlParents = accessControlParents.filter(
-          (sidebar: AccessControl) => sidebar.name.toUpperCase() !== 'SYSTEM'
+          (sidebar: AccessControl) =>
+            sidebar.name.toUpperCase() !== 'SYSTEM' && isAccessRoute(profile?.permissions, sidebar.permissions)
         )
       }
 
       setListSideBar([...accessControlParents])
     }
-  }, [accessControlResponse?.data.data.list, accessControlResponse?.data.data.total_record, profile?.department])
+  }, [
+    accessControlResponse?.data.data.list,
+    accessControlResponse?.data.data.total_record,
+    profile?.department,
+    profile?.permissions
+  ])
 
   return (
     <div className={`relative h-screen  bg-dark-purple p-5 pt-8 duration-300 ${open ? 'w-80' : 'w-20'}`}>

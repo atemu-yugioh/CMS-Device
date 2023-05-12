@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Navigate, Outlet, useRoutes } from 'react-router-dom'
+import { Navigate, Outlet, useLocation, useRoutes } from 'react-router-dom'
 import LoginLayout from './layouts/LoginLayout'
 import Login from './pages/Login'
 import { AppContext } from './contexts/app.context'
@@ -10,13 +10,46 @@ import AccessControl from './pages/System/pages/AccessControl'
 import Employee from './pages/System/pages/Employee'
 import Role from './pages/System/pages/Role'
 import Department from './pages/System/pages/Department'
-import Permission from './pages/System/pages/Permission'
 import Device from './pages/Cms/pages/Device'
+import { isAccessRoute, isFullAccess } from './utils/utils'
+import Permission from './pages/System/pages/Permission'
+import { useQuery } from '@tanstack/react-query'
+import accessControlApi from './apis/accessControl.api'
+import { Permission as IPermission } from './types/permission.type'
 
 const ProtectedRoute = () => {
-  const { isAuthenticated } = useContext(AppContext)
+  const { isAuthenticated, profile } = useContext(AppContext)
+  // lấy route name từ url
+  const { pathname } = useLocation()
+  const routeName = `/${pathname.split('/')[1]}`
 
-  return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />
+  // gọi api lấy thông tin permission của 1 access control dựa vào route name
+  const { data: accessControlResponse } = useQuery({
+    queryKey: ['detail-access-control', routeName],
+    queryFn: () => accessControlApi.getDetailACLByRouteName({ route: routeName })
+  })
+
+  // trích xuất thông tin permission của route từ response trả về
+  let permissionRoute: IPermission[] = []
+  if (accessControlResponse?.data.data) {
+    // eslint-disable-next-line no-unsafe-optional-chaining
+    permissionRoute = [...accessControlResponse?.data.data.permissions]
+  }
+
+  // chưa đăng nhập => login
+  if (!isAuthenticated) {
+    return <Navigate to={path.login} />
+  }
+
+  // login: true && profile: true ==> check access outlet
+  if (profile) {
+    if (isFullAccess(profile?.permissions) || isAccessRoute(profile?.permissions, permissionRoute)) {
+      return <Outlet />
+    }
+  }
+
+  // không có quyền vào access control => dashboard
+  return <Navigate to={path.dashboard} />
 }
 
 const RejectedRoute = () => {
@@ -71,7 +104,7 @@ const useRouteElement = () => {
               path: path.dashboard,
               element: (
                 // <MainLayout>
-                <DashBoard />
+                <DashBoard title='Dashboard' />
                 // </MainLayout>
               )
             },
@@ -83,6 +116,14 @@ const useRouteElement = () => {
                   element: <Device />
                 }
               ]
+            },
+            {
+              path: '/smart-home',
+              element: (
+                // <MainLayout>
+                <DashBoard title='Smart Home' />
+                // </MainLayout>
+              )
             }
           ]
         }
