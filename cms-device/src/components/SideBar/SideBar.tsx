@@ -66,8 +66,8 @@ const SideBar = () => {
 
       {/* SideBarItem */}
       <ul className='pt-2'>
-        {listSideBar.map((item, index) => (
-          <SideBarItem key={index} item={item} openSideBar={open} />
+        {listSideBar.map((item) => (
+          <SideBarItem key={item.id} item={item} openSideBar={open} />
         ))}
       </ul>
     </div>

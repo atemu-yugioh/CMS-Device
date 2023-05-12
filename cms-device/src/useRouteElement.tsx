@@ -15,6 +15,7 @@ import Device from './pages/Cms/pages/Device'
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext)
+
   return isAuthenticated ? <Outlet /> : <Navigate to={path.login} />
 }
 
@@ -33,11 +34,12 @@ const useRouteElement = () => {
   const routeElements = useRoutes([
     {
       path: '',
-      element: <SystemRoute />,
+      element: <MainLayout />,
+
       children: [
         {
           path: path.systems,
-          element: <MainLayout></MainLayout>,
+          element: <SystemRoute />,
           children: [
             {
               path: path.accessControl,
@@ -60,34 +62,33 @@ const useRouteElement = () => {
               element: <Permission />
             }
           ]
-        }
-      ]
-    },
-
-    {
-      path: '',
-      element: <ProtectedRoute />,
-      children: [
-        {
-          path: path.dashboard,
-          element: (
-            <MainLayout>
-              <DashBoard />
-            </MainLayout>
-          )
         },
         {
-          path: path.cms,
-          element: <MainLayout></MainLayout>,
+          path: '',
+          element: <ProtectedRoute />,
           children: [
             {
-              path: path.device,
-              element: <Device />
+              path: path.dashboard,
+              element: (
+                // <MainLayout>
+                <DashBoard />
+                // </MainLayout>
+              )
+            },
+            {
+              path: path.cms,
+              children: [
+                {
+                  path: path.device,
+                  element: <Device />
+                }
+              ]
             }
           ]
         }
       ]
     },
+
     {
       path: '',
       element: <RejectedRoute />,

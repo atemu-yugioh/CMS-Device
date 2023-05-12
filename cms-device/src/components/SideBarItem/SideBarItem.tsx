@@ -7,7 +7,7 @@ import { AccessControl } from 'src/types/accessControl.type'
 import { isAccessRoute } from 'src/utils/utils'
 
 interface Props {
-  key: number
+  key: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   item: AccessControl
   openSideBar: boolean
@@ -29,34 +29,31 @@ const SideBarItem = ({ item, openSideBar }: Props) => {
     )
 
     return (
-      <>
-        <Link to={listChildren[0]?.route}>
-          <div
-            className={`mt-2 flex cursor-pointer items-center gap-x-4 rounded-md p-2 text-sm text-gray-300 hover:bg-light-white ${isActive(
-              item.route
-            )}`}
+      <div>
+        {/* <Link to={listChildren[0]?.route}> */}
+        <div
+          className={`mt-2 flex cursor-pointer items-center gap-x-4 rounded-md p-2 text-sm text-gray-300 hover:bg-light-white ${isActive(
+            item.route
+          )}`}
+          onClick={() => setOpen(!open)}
+          aria-hidden='true'
+        >
+          <span className='float-left block text-2xl'>{item.icon ? item.icon : <AiTwotoneSetting />}</span>
+          <span className={` flex-1 text-base font-medium duration-200 ${!openSideBar && 'hidden'}`}>{item.name}</span>
+
+          <HiChevronDown
+            className={`duration-200 ${open && 'rotate-180'}`}
             onClick={() => setOpen(!open)}
             aria-hidden='true'
-          >
-            <span className='float-left block text-2xl'>{item.icon ? item.icon : <AiTwotoneSetting />}</span>
-            <span className={` flex-1 text-base font-medium duration-200 ${!openSideBar && 'hidden'}`}>
-              {item.name}
-            </span>
-
-            <HiChevronDown
-              className={`duration-200 ${open && 'rotate-180'}`}
-              onClick={() => setOpen(!open)}
-              aria-hidden='true'
-            />
-          </div>
-        </Link>
-
+          />
+        </div>
+        {/* </Link> */}
         <div className={`${!open || !openSideBar ? 'max-h-0' : 'max-h-96'} overflow-hidden pl-5 pt-1 duration-300`}>
-          {listChildren.map((child: AccessControl, index: number) => (
-            <SideBarItem key={index} item={child} openSideBar={openSideBar} />
+          {listChildren.map((child: AccessControl) => (
+            <SideBarItem key={child.id} item={child} openSideBar={openSideBar} />
           ))}
         </div>
-      </>
+      </div>
     )
   } else {
     return (
