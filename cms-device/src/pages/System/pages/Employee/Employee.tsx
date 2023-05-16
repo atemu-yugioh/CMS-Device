@@ -1,5 +1,11 @@
+import EmployeeTable from '../../components/EmployeeTable'
+
 const Employee = () => {
-  return <div>Employee</div>
+  return (
+    <div>
+      <EmployeeTable />
+    </div>
+  )
 }
 
 export default Employee
